@@ -1,0 +1,8 @@
+
+ export const eventName  = {
+        CONNECT_USB : "CONNECT_USB",
+        NOT_CONNECT_USB :"NOT_CONNECTED_USB",
+        RECORD_TEKMEDI_CARD :"RECORD_TEKMEDI_CARD", 
+        RECORD_BANK_CARD :"RECORD_BANK_CARD", 
+ }
+
