@@ -7,7 +7,7 @@
  */
 
 import React, { useState, useEffect } from "react";
-import { View, Text, TouchableOpacity, Alert,DeviceEventEmitter } from "react-native";
+import { View, Text, TouchableOpacity, Alert,DeviceEventEmitter, NativeEventEmitter, NativeModules } from "react-native";
 
 
 
@@ -17,33 +17,34 @@ const App: () => React$Node = () => {
   const [minu, setMinus] = useState("abc");
   const [isDetect , setIsDetect] = useState(false)
   useEffect( () => {
-    DeviceEventEmitter.addListener("RECORD_TEKMEDI_CARD",event=>{
-
-      console.log(event)
-    })
-    //  async function startRecord1 () {
-    //     try {
-    //       let A = await recordTek.getTekmediCard()
-    //       console.warn('asas')
-    //       setMinus(A)
-    //       setIsDetect(true)
-    //      } catch (e) {
-    //        console.warn(e)
-    //      }
+    const eventRecord = new  NativeEventEmitter (NativeModules.recordTek)
+    recordTek.startDetect()
+    eventRecord.addListener("RECORD", (event:string) => console.warn(event))
+    eventRecord.addListener("NOT_CONNECT", (event:any) => console.warn(event))
+    // eventRecord.addListener("STOP_DETECT", (event:boolean) => {
+    //   if  (event) {
+    //     recordTek.startDetect()
     //   }
-    //   setInterval(() =>startRecord1(), 3000 )
-      
+    // } )
+    return () =>{
+      recordTek.stopDetect()
+      eventRecord.removeSubscription(NativeModules.recordTek)
+    }
+    recordTek.test()
+    eventRecord.addListener("test",event=>{console.warn(event)})
   }, []);
-  const resetDetect = () => {
-    setMinus("")
-    setIsDetect(false)
+  const detetch = async () => {
+    let A : string  = await recordTek.detetchCard()
+    console.warn(A)
+
   }
 
   return (
     <View>
-     
+      <TouchableOpacity onPress={detetch} > 
         <Text> Click me </Text>
         <Text></Text>
+        </TouchableOpacity> 
     </View>
   );
 };

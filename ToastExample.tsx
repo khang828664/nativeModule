@@ -1,3 +1,8 @@
 import { NativeModules } from "react-native";
-
-export default  NativeModules.recordTek ; 
+type recordTekType = {
+    startDetect() : any, 
+    stopDetect() : any,    
+    test (): any 
+    detetchCard () : Promise<string>
+}
+export default  NativeModules.recordTek  as recordTekType ; 
